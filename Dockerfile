@@ -1,11 +1,15 @@
-FROM php:8.1-apache
+FROM mysql:8
 
-EXPOSE 80
 
-RUN docker-php-ext-install pdo_mysql
+ENV MYSQL_DATABASE=ujiansna
+ENV MYSQL_USER=sera
+ENV MYSQL_PASSWORD=halohalo
 
-COPY ./ /var/www/html/
+ENV MYSQL_ROOT_PASSWORD=abcdefgh
+ENV MYSQL_HOST=127.0.0.1
+ENV MYSQL_PORT=3306
 
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 750 /var/www/html
-RUN find /var/www/html -type d -exec chmod g+s {} \;
+
+COPY ./redlock-db.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 3306
